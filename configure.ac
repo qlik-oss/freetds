@@ -530,7 +530,10 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM([[#ifdef HAVE_SYS_TYPES_H
 AC_DEFINE(HAVE_GETADDRINFO, 1, [Define if you have getaddrinfo function]))
 ACX_POP_LIBS
 
-AC_REPLACE_FUNCS([asprintf vasprintf strtok_r readpassphrase \
+# ------------------------------------------------------------
+# Checks for miscellaneous things.
+# ------------------------------------------------------------
+AC_CHECK_FUNCS([strtok_r readpassphrase \
 strlcpy strlcat basename getopt strsep daemon setenv])
 AC_FUNC_FSEEKO
 TDS_GETTIMEMILLI
@@ -672,7 +675,7 @@ then
 		fi
 		;;
 	darwin* | rhapsody*)
-		if test "$with_odbc_nodm" = ""; then
+		if test "$with_oddbc_nodm" = ""; then
 			FREETDS_ODBC_MODULE="-module"
 		fi
 		;;
@@ -969,6 +972,18 @@ else
 	AM_CONDITIONAL(DISTCHECK_BUILD, false)
 fi
 
+AC_ARG_ENABLE(cslib,
+	AS_HELP_STRING([--enable-cslib], [build combined shared library libcs.so (Client Server Library)]))
+AM_CONDITIONAL(BUILD_CSLIB, test "$enable_cslib" = "yes")
+
+# Set visibility flags for cslib (hide symbols by default on GCC)
+# Public symbols must be marked with TDS_EXPORT
+CSLIB_VISIBILITY_CFLAGS=""
+if test "$ac_compiler_gnu" = "yes"; then
+	CSLIB_VISIBILITY_CFLAGS="-fvisibility=hidden"
+fi
+AC_SUBST(CSLIB_VISIBILITY_CFLAGS)
+
 # ------------------------------------------------------------
 # LTLIBOBJS hack (for autoconf-2.53)
 # ------------------------------------------------------------
@@ -1009,6 +1024,7 @@ AC_CONFIG_FILES(include/freetds/version.h \
 	src/utils/unittests/Makefile \
 	src/server/Makefile \
 	src/pool/Makefile \
+	src/cslib/Makefile \
 	src/odbc/Makefile \
 	src/odbc/unittests/Makefile \
 	src/apps/Makefile \
