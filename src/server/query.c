@@ -86,7 +86,7 @@ tds_lastpacket_bin(TDSSOCKET *tds)
 		return true;
 
 	/* Check TDS_STATUS_EOM flag (bit 0) - 0x01 means last packet */
-	return (tds->in_buf[1] & 0x01) != 0;
+	return (tds->in_buf[1] & TDS_STATUS_EOM) != 0;
 }
 
 /**

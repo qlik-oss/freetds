@@ -946,6 +946,12 @@ if test "$enable_developing" = "yes" ; then
 fi
 AM_CONDITIONAL(ENABLE_DEVELOPING, test "$enable_developing" = "yes")
 
+AC_ARG_ENABLE(ipv4-only,
+	AS_HELP_STRING([--enable-ipv4-only], [restrict server listener to IPv4 (disables IPv6 support)]))
+if test "$enable_ipv4_only" = "yes" ; then
+	AC_DEFINE(ENABLE_IPV4_ONLY, 1, [Define to restrict server listener to IPv4])
+fi
+
 AC_ARG_ENABLE(mars,
 	AS_HELP_STRING([--disable-mars], [enable MARS code]))
 if test "$enable_mars" != "no" ; then

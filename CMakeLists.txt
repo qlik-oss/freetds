@@ -9,6 +9,7 @@ option(ENABLE_ODBC_MARS    "Enable MARS" ON)
 option(ENABLE_EXTRA_CHECKS "Enable internal extra checks, DO NOT USE in production" OFF)
 option(ENABLE_MSDBLIB      "Enable MS style dblib" OFF)
 option(BUILD_SHARED_LIB    "Build FreeTDS as a shared library (DLL)" OFF)
+option(ENABLE_IPV4_ONLY    "Restrict server listener to IPv4 (disables IPv6 support)" OFF)
 
 if(COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
@@ -351,7 +352,7 @@ else()
 endif()
 
 # flags
-foreach(flag ODBC_WIDE EXTRA_CHECKS KRB5 ODBC_MARS)
+foreach(flag ODBC_WIDE EXTRA_CHECKS KRB5 ODBC_MARS IPV4_ONLY)
 	config_write("#cmakedefine ENABLE_${flag} 1\n\n")
 endforeach(flag)
 
