@@ -55,21 +55,14 @@ extern "C"
 {
 #endif
 
-/* These functions are always compiled and available in the replacements library.
- * We always declare them, but only define macros to redirect standard names
- * when the system doesn't provide native implementations.
- */
-
-/* tds_asprintf - always available */
-TDS_EXPORT int tds_asprintf(char **ret, const char *fmt, ...);
 #if !HAVE_ASPRINTF
+TDS_EXPORT int tds_asprintf(char **ret, const char *fmt, ...);
 #undef asprintf
 #define asprintf tds_asprintf
 #endif /* !HAVE_ASPRINTF */
 
-/* tds_vasprintf - always available */
-TDS_EXPORT int tds_vasprintf(char **ret, const char *fmt, va_list ap);
 #if !HAVE_VASPRINTF
+TDS_EXPORT int tds_vasprintf(char **ret, const char *fmt, va_list ap);
 #undef vasprintf
 #define vasprintf tds_vasprintf
 #endif /* !HAVE_VASPRINTF */

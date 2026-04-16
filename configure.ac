@@ -533,8 +533,8 @@ ACX_POP_LIBS
 # ------------------------------------------------------------
 # Checks for miscellaneous things.
 # ------------------------------------------------------------
-AC_CHECK_FUNCS([readpassphrase strlcpy strlcat asprintf vasprintf])
-AC_REPLACE_FUNCS([basename getopt strtok_r strsep daemon setenv])
+AC_CHECK_FUNCS([strlcpy strlcat])
+AC_REPLACE_FUNCS([basename getopt strtok_r strsep daemon setenv asprintf vasprintf readpassphrase])
 AC_FUNC_FSEEKO
 TDS_GETTIMEMILLI
 AC_FUNC_ALLOCA

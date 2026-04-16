@@ -8,16 +8,16 @@ libreplacements_la_SOURCES = \
 	poll.c \
 	socketpair.c \
 	getaddrinfo.c \
-	asprintf.c \
-	vasprintf.c \
 	strlcpy.c \
 	strlcat.c \
-	readpassphrase.c \
 	$(NULL)
 
 libreplacements_la_LDFLAGS =
 libreplacements_la_LIBADD = @LTLIBOBJS@ ../utils/libtdsutils.la
 EXTRA_DIST = \
+	asprintf.c \
+	vasprintf.c \
+	readpassphrase.c \
 	basename.c \
 	getopt.c \
 	strtok_r.c \

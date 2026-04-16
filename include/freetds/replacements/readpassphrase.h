@@ -67,10 +67,8 @@
 #define RPP_STDIN       0x20		/* Read from stdin, not /dev/tty */
 #endif
 
-/* tds_readpassphrase is always available */
-TDS_EXPORT char * tds_readpassphrase(const char *, char *, size_t, int);
-
 #ifndef HAVE_READPASSPHRASE
+TDS_EXPORT char * tds_readpassphrase(const char *, char *, size_t, int);
 #undef readpassphrase
 #define readpassphrase tds_readpassphrase
 #endif
