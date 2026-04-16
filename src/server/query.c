@@ -190,8 +190,15 @@ tds_get_generic_query_ex(TDSSOCKET * tds, int flags, size_t *out_len)
 				assert(len >= 1);	/* TODO handle */
 				tds_get_byte(tds);	/* has args, ignored TODO */
 				if (len > query_buflen) {
+					char *new_query = (char *) realloc(query, len);
+					if (!new_query) {
+						free(query);
+						query = NULL;
+						query_buflen = 0;
+						return NULL;
+					}
+					query = new_query;
 					query_buflen = len;
-					query = (char *) realloc(query, query_buflen);
 				}
 				--len;
 				tds_get_n(tds, query, len);
@@ -210,8 +217,15 @@ tds_get_generic_query_ex(TDSSOCKET * tds, int flags, size_t *out_len)
 				/* get the length of the stored procedure's name */
 				len = tds_get_byte(tds) + 1;/* sproc name size +1 */
 				if (len > query_buflen) {
+					char *new_query = (char *) realloc(query, len);
+					if (!new_query) {
+						free(query);
+						query = NULL;
+						query_buflen = 0;
+						return NULL;
+					}
+					query = new_query;
 					query_buflen = len;
-					query = (char *) realloc(query, query_buflen);
 				}
 
 				/*
@@ -271,9 +285,17 @@ tds_get_generic_query_ex(TDSSOCKET * tds, int flags, size_t *out_len)
 				more = tds->in_len - tds->in_pos;
 				src = (char *) (tds->in_buf + tds->in_pos);
 				if ((size_t)(len + more + 1) > query_buflen) {
-					query_buflen = len + more + 1024u;
-					query_buflen -= query_buflen % 1024u;
-					query = (char *) realloc(query, query_buflen);
+					size_t new_buflen = len + more + 1024u;
+					new_buflen -= new_buflen % 1024u;
+					char *new_query = (char *) realloc(query, new_buflen);
+					if (!new_query) {
+						free(query);
+						query = NULL;
+						query_buflen = 0;
+						return NULL;
+					}
+					query = new_query;
+					query_buflen = new_buflen;
 				}
 
 				/*
