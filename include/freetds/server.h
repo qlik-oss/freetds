@@ -21,6 +21,7 @@
 #define _tdsguard_gt6cowOjOuyOf2Og3Ypj8u_
 
 #include <freetds/export.h>
+#include <stddef.h> /* size_t */
 
 #ifdef __cplusplus
 extern "C"
