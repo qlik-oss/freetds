@@ -675,7 +675,7 @@ then
 		fi
 		;;
 	darwin* | rhapsody*)
-		if test "$with_oddbc_nodm" = ""; then
+		if test "$with_odbc_nodm" = ""; then
 			FREETDS_ODBC_MODULE="-module"
 		fi
 		;;
