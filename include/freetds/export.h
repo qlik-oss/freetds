@@ -1,5 +1,5 @@
 /* FreeTDS - Library of routines accessing Sybase and Microsoft databases
- * Copyright (C) 2024  FreeTDS contributors
+ * Copyright (C) 2026  FreeTDS contributors, Qlik Tech
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
