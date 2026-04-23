@@ -24,7 +24,7 @@ if INCAPPS
 SUBDIRS += apps
 endif
 
-# Build cslib (libcs.so) if enabled
+# Build cslib (libfreetds-cs.so) if enabled
 if BUILD_CSLIB
 SUBDIRS += cslib
 endif

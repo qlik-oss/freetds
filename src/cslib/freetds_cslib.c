@@ -1,6 +1,6 @@
 /*
  * FreeTDS cslib (Client Server Library) entry point
- * This file provides initialization/cleanup for the FreeTDS cslib (libcs)
+ * This file provides initialization/cleanup for the FreeTDS cslib (libfreetds-cs)
  * that combines tds, tdssrv, replacements, and tdsutils libraries.
  */
 
