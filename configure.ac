@@ -979,7 +979,7 @@ else
 fi
 
 AC_ARG_ENABLE(cslib,
-	AS_HELP_STRING([--enable-cslib], [build combined shared library libcs.so (Client Server Library)]))
+	AS_HELP_STRING([--enable-cslib], [build combined shared library libfreetds-cs.so (Client Server Library)]))
 AM_CONDITIONAL(BUILD_CSLIB, test "$enable_cslib" = "yes")
 
 # Set visibility flags for cslib (hide symbols by default on GCC)
