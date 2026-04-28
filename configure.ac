@@ -530,8 +530,11 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM([[#ifdef HAVE_SYS_TYPES_H
 AC_DEFINE(HAVE_GETADDRINFO, 1, [Define if you have getaddrinfo function]))
 ACX_POP_LIBS
 
-AC_REPLACE_FUNCS([asprintf vasprintf strtok_r readpassphrase \
-strlcpy strlcat basename getopt strsep daemon setenv])
+# ------------------------------------------------------------
+# Checks for miscellaneous things.
+# ------------------------------------------------------------
+AC_CHECK_FUNCS([strlcpy strlcat])
+AC_REPLACE_FUNCS([basename getopt strtok_r strsep daemon setenv asprintf vasprintf readpassphrase])
 AC_FUNC_FSEEKO
 TDS_GETTIMEMILLI
 AC_FUNC_ALLOCA
@@ -943,6 +946,12 @@ if test "$enable_developing" = "yes" ; then
 fi
 AM_CONDITIONAL(ENABLE_DEVELOPING, test "$enable_developing" = "yes")
 
+AC_ARG_ENABLE(ipv4-only,
+	AS_HELP_STRING([--enable-ipv4-only], [restrict server listener to IPv4 (disables IPv6 support)]))
+if test "$enable_ipv4_only" = "yes" ; then
+	AC_DEFINE(ENABLE_IPV4_ONLY, 1, [Define to restrict server listener to IPv4])
+fi
+
 AC_ARG_ENABLE(mars,
 	AS_HELP_STRING([--disable-mars], [enable MARS code]))
 if test "$enable_mars" != "no" ; then
@@ -968,6 +977,18 @@ if test "$enable_distcheck_build" = "yes" ; then
 else
 	AM_CONDITIONAL(DISTCHECK_BUILD, false)
 fi
+
+AC_ARG_ENABLE(cslib,
+	AS_HELP_STRING([--enable-cslib], [build combined shared library libfreetds-cs.so (Client Server Library)]))
+AM_CONDITIONAL(BUILD_CSLIB, test "$enable_cslib" = "yes")
+
+# Set visibility flags for cslib (hide symbols by default on GCC)
+# Public symbols must be marked with TDS_EXPORT
+CSLIB_VISIBILITY_CFLAGS=""
+if test "$ac_compiler_gnu" = "yes"; then
+	CSLIB_VISIBILITY_CFLAGS="-fvisibility=hidden"
+fi
+AC_SUBST(CSLIB_VISIBILITY_CFLAGS)
 
 # ------------------------------------------------------------
 # LTLIBOBJS hack (for autoconf-2.53)
@@ -1009,6 +1030,7 @@ AC_CONFIG_FILES(include/freetds/version.h \
 	src/utils/unittests/Makefile \
 	src/server/Makefile \
 	src/pool/Makefile \
+	src/cslib/Makefile \
 	src/odbc/Makefile \
 	src/odbc/unittests/Makefile \
 	src/apps/Makefile \

@@ -8,6 +8,8 @@ option(ENABLE_KRB5         "Enable Kerberos support" OFF)
 option(ENABLE_ODBC_MARS    "Enable MARS" ON)
 option(ENABLE_EXTRA_CHECKS "Enable internal extra checks, DO NOT USE in production" OFF)
 option(ENABLE_MSDBLIB      "Enable MS style dblib" OFF)
+option(BUILD_SHARED_LIB    "Build FreeTDS as a shared library (DLL)" OFF)
+option(ENABLE_IPV4_ONLY    "Restrict server listener to IPv4 (disables IPv6 support)" OFF)
 
 if(COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
@@ -350,7 +352,7 @@ else()
 endif()
 
 # flags
-foreach(flag ODBC_WIDE EXTRA_CHECKS KRB5 ODBC_MARS)
+foreach(flag ODBC_WIDE EXTRA_CHECKS KRB5 ODBC_MARS IPV4_ONLY)
 	config_write("#cmakedefine ENABLE_${flag} 1\n\n")
 endforeach(flag)
 
@@ -367,7 +369,9 @@ config_write("#define FREETDS_TOPDIR \"${FREETDS_TOPDIR}\"\n\n")
 # TODO allow to configure default TDS protocol version
 
 config_write("#if defined(_MSC_VER) && !defined(__cplusplus)
-#  define inline __inline
+#  if !defined(inline)
+#    define inline __inline
+#  endif
 #endif
 #if defined(_MSC_VER)
 #  define _CRT_SECURE_NO_WARNINGS 1
@@ -479,6 +483,11 @@ add_subdirectory(src/odbc)
 add_subdirectory(src/apps)
 add_subdirectory(src/server)
 add_subdirectory(src/pool)
+
+# Add cslib (Client Server Library) shared library build if enabled
+if(BUILD_SHARED_LIB)
+    add_subdirectory(src/cslib)
+endif()
 
 configure_file(${CMAKE_BINARY_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
 configure_file(${CMAKE_SOURCE_DIR}/include/tds_sysdep_public.h.in ${CMAKE_BINARY_DIR}/include/tds_sysdep_public.h)

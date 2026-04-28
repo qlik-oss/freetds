@@ -56,6 +56,14 @@
 #include <freetds/server.h>
 #include <freetds/utils.h>
 
+/* When ENABLE_IPV4_ONLY is set at build time, force IPv4-only.
+ * This must be placed AFTER all socket headers since they define AF_INET6.
+ * Configure: --enable-ipv4-only / CMake: -DENABLE_IPV4_ONLY=ON
+ */
+#ifdef ENABLE_IPV4_ONLY
+#undef AF_INET6
+#endif
+
 unsigned char *
 tds7_decrypt_pass(const unsigned char *crypt_pass, int len, unsigned char *clear_pass)
 {
